@@ -33,6 +33,7 @@ Ce projet démontre une architecture distribuée orientée événements avec les
 * **Kafka** : Broker de messages (Port : 9092)
 * **Zookeeper** : Coordination Kafka (Port : 2181)
 * **MongoDB** : Stockage persistant (Port : 27017)
+* **Kafka UI** : Interface de visualisation Kafka (Port : 8080)
 * **Frontend** : Application web Next.js (Port : 3000)
 
 ### Topics Kafka
@@ -74,7 +75,7 @@ Ce projet démontre une architecture distribuée orientée événements avec les
 * Docker Desktop ou Docker Engine
 * Docker Compose
 * 8GB RAM minimum
-* Ports disponibles : 3000, 3001, 3002, 3003, 3004, 9092, 27017, 2181
+* Ports disponibles : 3000, 3001, 3002, 3003, 3004, 8080, 9092, 27017, 2181
 
 ## Installation et Configuration
 
@@ -111,7 +112,7 @@ docker-compose up --build
 Cette commande va :
 
 * Construire toutes les images Docker
-* Démarrer Kafka, Zookeeper, MongoDB
+* Démarrer Kafka, Zookeeper, MongoDB, Kafka UI
 * Démarrer les 4 microservices
 * Démarrer l'application frontend
 
@@ -127,11 +128,21 @@ Attendre environ 30-60 secondes pour que tous les services s'initialisent. Surve
 
 ### Accéder à l'Application
 
-Ouvrez votre navigateur et accédez à :
-
+**Interface Web :**
 ```
 http://localhost:3000
 ```
+
+**Kafka UI (Visualisation des événements) :**
+```
+http://localhost:8080
+```
+
+Dans Kafka UI, vous pouvez :
+* Visualiser les topics (`orders`, `deliveries`)
+* Voir les messages en temps réel
+* Examiner les consumer groups
+* Surveiller les offsets et partitions
 
 ### Créer une Commande
 
@@ -141,6 +152,15 @@ http://localhost:3000
 4. Observez la confirmation de création de commande
 
 ### Surveiller le Flux d'Événements
+
+**Option 1 : Kafka UI (Recommandé)**
+
+Accédez à `http://localhost:8080` pour visualiser les événements Kafka en temps réel :
+* Naviguez vers "Topics" pour voir les topics `orders` et `deliveries`
+* Cliquez sur un topic pour voir les messages
+* Les messages s'affichent en temps réel avec leur contenu JSON
+
+**Option 2 : Logs Docker**
 
 Ouvrez un nouveau terminal et exécutez :
 
@@ -262,10 +282,10 @@ Assurez-vous d'avoir créé les fichiers `.env` à partir des `.env.example` (vo
 - `MONGODB_URI=mongodb://admin:admin123@localhost:27017/...` (au lieu de `mongodb:27017`)
 - `TRACKING_SERVICE_URL=http://localhost:3003` (au lieu de `http://tracking-service:3003`)
 
-#### 2. Démarrer Kafka et MongoDB
+#### 2. Démarrer Kafka, MongoDB et Kafka UI
 
 ```bash
-docker-compose up zookeeper kafka mongodb
+docker-compose up zookeeper kafka mongodb kafka-ui
 ```
 
 #### 3. Installer les dépendances
